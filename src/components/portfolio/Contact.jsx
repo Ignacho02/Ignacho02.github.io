@@ -1,22 +1,46 @@
 // src/pages/Contact.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Linkedin, Github } from "lucide-react";
+import emailjs from '@emailjs/browser';
+
+// Reemplaza estos valores con los tuyos de EmailJS
+const SERVICE_ID = "service_4y5ldm5";
+const TEMPLATE_ID = "template_r5dc3k9";
+const PUBLIC_KEY = "fRiqLIsOmvaEkij23";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSending, setIsSending] = useState(false);
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSending(true);
-    setTimeout(() => {
+    setError(false);
+
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        PUBLIC_KEY
+      );
       setSent(true);
       setFormData({ name: "", email: "", message: "" });
-      setIsSending(false);
       setTimeout(() => setSent(false), 5000);
-    }, 1000);
+    } catch (err) {
+      console.error("Error sending email:", err);
+      setError(true);
+      setTimeout(() => setError(false), 5000);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -50,7 +74,7 @@ export default function Contact() {
           maxWidth: '64rem',
           margin: '0 auto'
         }}>
-          {/* Formulario más pequeño */}
+          {/* Formulario */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -99,15 +123,22 @@ export default function Contact() {
                   fontSize: '0.95rem',
                   borderRadius: '0.5rem',
                   border: 'none',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  opacity: isSending ? 0.8 : 1,
                 }}
               >
-                {isSending ? "Sending..." : sent ? "Message Sent!" : "Send Message"}
+                {isSending
+                  ? "Sending..."
+                  : sent
+                  ? "Message Sent!"
+                  : error
+                  ? "Error – Try Again"
+                  : "Send Message"}
               </button>
             </form>
           </motion.div>
 
-          {/* Enlaces de contacto — estilo como en ProjectDetail */}
+          {/* Enlaces de contacto */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
