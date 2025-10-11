@@ -1,12 +1,12 @@
 // src/components/portfolio/About.jsx
 import React from "react";
 import { motion } from "framer-motion";
-import { Download } from "lucide-react"; // 👈 Importamos el icono
+import { Download } from "lucide-react";
 
 export default function About() {
   return (
     <section id="about" className="section" style={{ backgroundColor: "#f8fafc" }}>
-      <div className="container" style={{ paddingBottom: "0rem" }}> 
+      <div className="container" style={{ paddingBottom: "0rem" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -17,16 +17,8 @@ export default function About() {
           <h2 className="section-title">About Me</h2>
         </motion.div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "3rem",
-            maxWidth: "80rem",
-            margin: "0 auto",
-            alignItems: "start",
-          }}
-        >
+        {/* Grid responsive usando clase CSS */}
+        <div className="grid-2-cols" style={{ maxWidth: "80rem", margin: "0 auto" }}>
           {/* Columna izquierda: Experiencia laboral */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -64,6 +56,7 @@ export default function About() {
                 justifyContent: "center",
                 gap: "2rem",
                 marginTop: "1.5rem",
+                flexWrap: "wrap", // permite que los logos se apilen si no caben
               }}
             >
               <div
@@ -148,6 +141,7 @@ export default function About() {
                 justifyContent: "center",
                 gap: "2rem",
                 marginTop: "1.5rem",
+                flexWrap: "wrap",
               }}
             >
               <div
@@ -212,8 +206,8 @@ export default function About() {
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
-              backgroundColor: "#e2e8f0", // gris claro
-              color: "#1e293b", // azul grisáceo oscuro
+              backgroundColor: "#e2e8f0",
+              color: "#1e293b",
               padding: "0.75rem 1.5rem",
               borderRadius: "9999px",
               fontWeight: "600",

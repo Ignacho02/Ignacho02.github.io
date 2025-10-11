@@ -2,7 +2,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Datos para Big Data & Analytics
 const bigDataTools = [
   { src: "/icons/Python.png", name: "Python", level: "advanced" },
   { src: "/icons/Excel.png", name: "Excel", level: "advanced" },
@@ -11,7 +10,6 @@ const bigDataTools = [
   { src: "/icons/SPSS.png", name: "SPSS", level: "intermediate" },
 ];
 
-// Datos para Sports Science
 const sportsScienceTools = [
   { src: "/icons/Catapult.png", name: "GPS Devices & Software", level: "advanced", large: true },
   { src: "/icons/Tforce.png", name: "Linear Encoders (T-Force)", level: "advanced", large: true },
@@ -19,7 +17,6 @@ const sportsScienceTools = [
   { src: "/icons/Nacsport.png", name: "Video & Tactical Analysis Sofwares", level: "intermediate" },
 ];
 
-// Función auxiliar para obtener estilos según el nivel
 const getLevelStyles = (level) => {
   if (level === "advanced") {
     return {
@@ -39,7 +36,6 @@ export default function Skills() {
   return (
     <section className="section" style={{ backgroundColor: "white" }}>
       <div className="container">
-        {/* --- Título y subtítulo --- */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,29 +54,17 @@ export default function Skills() {
               fontSize: "1.1rem",
               color: "#64748b",
               maxWidth: "100%",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
               margin: "0 auto",
               lineHeight: 1.4,
+              textAlign: "center",
             }}
           >
             Core areas of expertise and technical skills developed through research and professional experience.
           </p>
         </motion.div>
 
-
-        {/* --- GRID PRINCIPAL --- */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "2rem",
-            maxWidth: "72rem",
-            margin: "0 auto",
-            alignItems: "start",
-          }}
-        >
+        {/* Grid principal responsive */}
+        <div className="grid-2-cols" style={{ maxWidth: "72rem", margin: "0 auto" }}>
           {/* Big Data & Analytics */}
           <motion.div
             initial={{ opacity: 0, x: -15 }}
@@ -131,14 +115,7 @@ export default function Skills() {
                 Tools & Technologies
               </h4>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))",
-                  gap: "1rem",
-                  justifyItems: "center",
-                }}
-              >
+              <div className="skill-icons-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(80px, 1fr))" }}>
                 {bigDataTools.map((tool, i) => {
                   const levelStyles = getLevelStyles(tool.level);
                   return (
@@ -204,7 +181,7 @@ export default function Skills() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: "1fr",
                   gap: "0.4rem",
                   fontSize: "1rem",
                   color: "#475569",
@@ -270,14 +247,7 @@ export default function Skills() {
                 Tools & Technologies
               </h4>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
-                  gap: "1rem",
-                  justifyItems: "center",
-                }}
-              >
+              <div className="skill-icons-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))" }}>
                 {sportsScienceTools.map((tool, i) => {
                   const levelStyles = getLevelStyles(tool.level);
                   const iconScale = tool.large ? "85%" : "70%";
@@ -345,7 +315,7 @@ export default function Skills() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateColumns: "1fr",
                   gap: "0.4rem",
                   fontSize: "1rem",
                   color: "#475569",
@@ -371,6 +341,8 @@ export default function Skills() {
             marginTop: "2.5rem",
             fontSize: "0.95rem",
             color: "#475569",
+            flexWrap: "wrap",
+            justifyContent: "center",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
