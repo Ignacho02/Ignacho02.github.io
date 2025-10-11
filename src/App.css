@@ -186,3 +186,18 @@ ul, ol {
 .footer p {
   margin: 0;
 }
+
+/* Core Competencies: 1 columna en móvil, 2 en escritorio */
+.core-competencies {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+  font-size: 1rem;
+  color: #475569;
+}
+
+@media (min-width: 768px) {
+  .core-competencies {
+    grid-template-columns: 1fr 1fr;
+  }
+}

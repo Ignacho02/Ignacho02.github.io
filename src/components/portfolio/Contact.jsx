@@ -149,50 +149,71 @@ export default function Contact() {
               flexDirection: 'row',
               justifyContent: 'center',
               gap: '2rem',
-              flexWrap: 'wrap'
+              flexWrap: 'wrap',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* Email */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                minWidth: '120px',
+              }}
+            >
               <Mail size={24} color="#ea4335" />
-              <div>
-                <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>Email</p>
-                <a
-                  href="mailto:nachogarbil@gmail.com"
-                  style={{ fontSize: '1.125rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
-                >
-                  nachogarbil@gmail.com
-                </a>
-              </div>
+              <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '0.5rem 0 0.25rem' }}>Email</p>
+              <a
+                href="mailto:nachogarbil@gmail.com"
+                style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
+              >
+                nachogarbil@gmail.com
+              </a>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* LinkedIn */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                minWidth: '120px',
+              }}
+            >
               <Linkedin size={24} color="#0a66c2" />
-              <div>
-                <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>LinkedIn</p>
-                <a
-                  href="https://www.linkedin.com/in/igb"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '1.125rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
-                >
-                  linkedin.com/in/igb
-                </a>
-              </div>
+              <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '0.5rem 0 0.25rem' }}>LinkedIn</p>
+              <a
+                href="https://www.linkedin.com/in/igb"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
+              >
+                linkedin.com/in/igb
+              </a>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {/* GitHub */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                minWidth: '120px',
+              }}
+            >
               <Github size={24} color="#171515" />
-              <div>
-                <p style={{ fontSize: '0.875rem', color: '#64748b', margin: 0 }}>GitHub</p>
-                <a
-                  href="https://github.com/Ignacho02"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ fontSize: '1.125rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
-                >
-                  github.com/Ignacho02
-                </a>
-              </div>
+              <p style={{ fontSize: '0.875rem', color: '#64748b', margin: '0.5rem 0 0.25rem' }}>GitHub</p>
+              <a
+                href="https://github.com/Ignacho02"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '1rem', fontWeight: '600', color: '#0f172a', textDecoration: 'none' }}
+              >
+                github.com/Ignacho02
+              </a>
             </div>
           </motion.div>
         </div>

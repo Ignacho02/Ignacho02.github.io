@@ -178,15 +178,7 @@ export default function Skills() {
               >
                 Core Competencies
               </h4>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: "0.4rem",
-                  fontSize: "1rem",
-                  color: "#475569",
-                }}
-              >
+              <div className="core-competencies">
                 <span>• Web Scraping</span>
                 <span>• Data Cleaning</span>
                 <span>• Statistical Analysis</span>
@@ -312,15 +304,7 @@ export default function Skills() {
               >
                 Core Competencies
               </h4>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr",
-                  gap: "0.4rem",
-                  fontSize: "1rem",
-                  color: "#475569",
-                }}
-              >
+              <div className="core-competencies">
                 <span>• Load Monitoring</span>
                 <span>• Tactical Analysis</span>
                 <span>• Performance Testing</span>
