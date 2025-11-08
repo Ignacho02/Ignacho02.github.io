@@ -49,7 +49,7 @@ export const project1Content = {
     <p style="margin-bottom: 1em;">RMSE is the primary criterion for model selection because it strongly penalizes large prediction errors—critical when underestimating or overestimating load could lead to poor training decisions—and because it retains the original units of the target variables (e.g., meters, counts), making errors directly interpretable by practitioners.</p>
   `,
 
-results: `
+  results: `
   <p>Both models deliver strong predictive performance, with the <strong>Random Forest (Tuned Fast)</strong> configuration standing out as the preferred choice. Specifically, it achieves an R² above 80% for two-thirds of all targets and surpasses 90% for more than half—demonstrating both breadth and depth in its accuracy. Coupled with its training efficiency and consistent stability across diverse physical load metrics, this balance makes it the natural candidate for deployment.</p>
 
   <div style="margin: 2rem 0;">
@@ -75,9 +75,9 @@ results: `
   </div>
 
   <p>The final model and its full preprocessing pipeline are serialized using Joblib and integrated into the Streamlit application (Download notebook with the code and selected model <a href="/data/Final_model_deployment.ipynb" download style="color: #3b82f6; font-weight: bold; text-decoration: underline;">here</a>).</p>
-`,
+  `,
 
-  app: `
+  streamlit_app: `
     <p>The Streamlit application, containing the trained RF model, empowers coaching and performance staff to anticipate actual external load before a session begins. By inputting task parameters, users receive real-time predictions per player and per drill, categorized by team, enabling proactive adjustments to session design. The interface includes three main tabs:</p>
     <ul style="list-style-type: disc; padding-left: 1.5em; margin: 1em 0;">
       <li><strong>Session Prediction</strong>: Forecasts load per player and task, benchmarked against recent match averages (match data only for players with ≥60 min played).</li>
@@ -103,7 +103,7 @@ results: `
         🚀 Try the App
       </a>
     </div>
-      `,
+  `,
 
   references: [
     "Akenhead, R., & Nassis, G. P. (2016). Training load and player monitoring in high-level football: Current practice and perceptions. International Journal of Sports Physiology and Performance, 11(5), 587–593. https://doi.org/10.1123/ijspp.2015-0331",
@@ -117,4 +117,202 @@ results: `
   ],
 
   technologies: ["Python", "scikit-learn", "XGBoost", "Streamlit", "Pandas", "Joblib", "Numpy", "Matplotlib", "Seaborn"]
+};
+
+export const project2Content = {
+  introduction: `
+    <p style="margin-bottom: 1.5em;">In most football clubs, <strong>Excel spreadsheets</strong> exported from tracking systems like Catapult, STATSports, or Wimu are the default way to manage GPS, wellness, and fitness data. While functional, this manual approach becomes <strong>inefficient and error-prone</strong> as data volume grows—duplicated records, broken formulas, and inconsistent updates compromise long-term analysis.</p>
+
+    <p>This project replicates the <strong>data infrastructure of a professional football performance department</strong>, demonstrating how modern data engineering can transform that fragmented workflow into a <strong>scalable, automated system</strong>. Using <strong>Python, SQLite, and PowerBI</strong>, it builds a complete pipeline that converts raw CSV exports into a <strong>structured SQL database</strong> connected to <strong>automated dashboards</strong>, <strong>supporting evidence-based decision making</strong> in a more efficient way.</p>
+  `,
+
+  data: `
+      <p style="margin-bottom: 1.5em;">The synthetic dataset applied in the project simulates a realistic monitoring ecosystem used in elite football environments. Metric selection followed the <strong>quadrant model</strong> (Buchheit & Laursen, 2024), which ensures systematic coverage of key physiological domains by including at least one monitoring variable per quadrant.</p>
+
+      <p>At the heart of this framework is <strong>heart rate–based load tracking via THRZ</strong> (Time in High-intensity Heart Rate Zones). As Buchheit et al. (2025) explained:</p>
+
+      <blockquote style="margin: 1rem 0; padding: 0.75rem 1rem; background-color: #f8fafc; border-left: 3px solid #3b82f6; font-style: italic; color: #334155;">
+        Accumulating ~30 minutes per week above 90% HR<sub>max</sub> provides a realistic minimal stimulus for maintaining or improving aerobic fitness. Each additional 10 minutes in this zone may yield an extra 1–2% improvement in key fitness markers.
+      </blockquote>
+
+      <p>THRZ was prioritized over aggregated metrics like TRIMPs due to its practical advantages:</p>
+      <ul style="list-style-type: disc; padding-left: 1.5em; margin: 1em 0;">
+        <li><strong>Simplicity</strong>: Easy to compute and interpret without complex individualization.</li>
+        <li><strong>Actionability</strong>: Directly applicable to daily and weekly load planning.</li>
+        <li><strong>Granularity</strong>: Better aligned with micro-cycle objectives (e.g., session- and week-level targets).</li>
+      </ul>
+
+      <div style="margin: 2rem 0; padding: 0 0.5rem;">
+        <img src="/images/cuadrante.jpg" alt="Quadrant model for load and response monitoring" style="width: 100%; max-width: 700px; display: block; margin: 0 auto; border-radius: 0.5rem; border: 1px solid #cbd5e1;" />
+        <p style="font-size: 0.875rem; color: #4b5563; margin-top: 0.5rem; text-align: left;">
+          <strong>Quadrant model</strong> – Framework for selecting monitoring variables (Buchheit & Laursen, 2024)
+        </p>
+      </div>
+
+      <p style="margin-bottom: 1.5rem; line-height: 1.75; color: #1e293b; font-size: 1.05rem; text-align: justify;">
+        With this approach, the specific variables selected for each quadrant are outlined in the table below.
+      </p>
+
+      <table style="width: 100%; margin: 1.5rem 0; border-collapse: collapse; font-size: 0.95rem;">
+        <thead>
+          <tr style="background-color: #f1f5f9;">
+            <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0;">Quadrant</th>
+            <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0;">Domain</th>
+            <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0;">Selected variables</th>
+            <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0;">Explanation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Metabolic Load</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Internal</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">HR Zones (THRZ), RPE</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Practical and cost-effective. HR and RPE are widely validated proxies for internal load, once we accept their limitations, and are easy to implement at scale. </td>
+          </tr>
+          <tr>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Neuromuscular Load</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Internal and external</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">RPE and GPS metrics (distance, high-speed distance, accelerations)</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">GPS is a common, pragmatic proxy for external/neuromuscular load. Direct measures (force plates, linear encoders) are more informative for strength-specific neuromuscular strain but are excluded from the pipeline to keep the project reproducible. </td>
+          </tr>
+          <tr>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Metabolic Adaptation</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Response and adaptation</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Submaximal exercise HR and lactate response (e.g., 1500 m submax test with lactate sampling)</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Reflects aerobic efficiency and metabolic adaptation. These biomarkers enable aerobic adaptation tracking via submaximal testing, ideal for elite football where frequent maximal efforts are impractical.</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Neuromuscular Adaptation</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Response and adaptation</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">CMJ, isometric strength and movement velocity (e.g., squat 1RM and velocity at 60% 1RM)</td>
+            <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">These tests capture neuromuscular capacity and adaptation. Together with the aerobic test, the jump and basic strength tests complete the testing battery for this project.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Download the full synthetic data generator notebook <a href="/data/Data_generation.ipynb" download style="color: #3b82f6; font-weight: bold; text-decoration: underline;">here</a>.</p>
+  `,
+
+  database: `
+    <p>The core of the system is a <strong>relational SQLite database</strong> that unifies raw CSV exports (GPS, wellness, and fitness data) into a clean, queryable structure. It serves as the central layer of the workflow, ensuring data <strong>integrity, traceability, and automation</strong> while supporting four key monitoring domains: players, session metrics, wellness, and fitness tests. SQLite was chosen for its simplicity and portability, though the schema is scalable to MySQL or other production-grade databases. The resulting relational structure consists of the following tables:</p>
+
+    <table style="width: 100%; margin: 1.5rem 0; border-collapse: collapse; font-size: 0.95rem;">
+      <thead>
+        <tr style="background-color: #f1f5f9;">
+          <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0; width: 18%;">Table</th>
+          <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0; width: 28%;">Content</th>
+          <th style="padding: 0.6rem; text-align: left; border: 1px solid #e2e8f0; width: 54%;">Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Players</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Player profiles (age, position, anthropometrics)</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Reference table linking all monitoring domains to individual athletes.</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Session metrics</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">GPS and HR data per session</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Quantifies external and internal training load on a daily basis.</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Wellness</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Daily self-reported metrics</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Monitors subjective recovery status and well-being trends.</td>
+        </tr>
+        <tr>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Fitness tests</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Periodic testing (jumps, HR, strength)</td>
+          <td style="padding: 0.6rem; border: 1px solid #e2e8f0;">Tracks longitudinal adaptations to training stimuli.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>For implementation details, download the script that creates the initial database <a href="/data/create_db.py" download style="color: #3b82f6; font-weight: bold; text-decoration: underline;">here</a>.</p>
+    `,
+
+  dashboard: `
+      <p>Once the database is created, it can be connected directly to <strong>Power BI Desktop</strong> via a live SQL connection. This means that every time new CSV files are processed and appended by the pipeline, Power BI can refresh automatically to reflect the latest data, eliminating manual reprocessing. The dashboards are built on SQL queries that join the four core tables, enabling flexible, longitudinal visualizations of:</p>
+      <ul style="list-style-type: disc; padding-left: 1.5em; margin: 1em 0;">
+        <li>Training load trends (distances, HR zones, RPE load)</li>
+        <li>Wellness and recovery profiles</li>
+        <li>Fitness test progression and player benchmarking</li>
+      </ul>
+
+      <p>The example dashboard built for this project demonstrates how coaches and sport scientists could monitor weekly load, identify high-intensity exposures, and compare players or squads across training days—all within a single, interactive interface.</p>
+
+      <div style="margin: 2rem 0;">
+        <img src="/images/Dashboard.jpg" alt="Full Power BI Dashboard" style="width: 100%; max-width: 900px; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+        <p style="font-size: 0.875rem; color: #4b5563; margin-top: 0.5rem;">
+          <strong>Complete Power BI dashboard (<a href="/files/Departamento_Optimizacion.pbix" download style="color: #4b82f6; font-weight: bold; text-decoration: underline;">Download here</a>)</strong> – Simulating a professional performance department.
+        </p>
+      </div>
+      <h3 style="font-weight: 700; margin: 2rem 0 1rem;">Key Views and Metrics</h3>
+
+      <p><strong>• Weekly Load Summary</strong> → Displays total activity minutes, average RPE, total distance (m), minutes >90% HR<sub>max</sub>, and >95% V<sub>max</sub> exposures, offering a quick overview of physical stress for the selected week or squad. Color-coded alerts flag insufficient exposure (red) versus adequate stimulus (green).</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/KPI.jpg" alt="Weekly Load Summary Dashboard" style="width: 100%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <p><strong>• Training Distance Distribution by Day</strong> → Line charts show total distance and high-speed distance per weekday, highlighting day-to-day load variation (e.g., MD, MD‑1, MD‑2).</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/distancia.jpg" alt="Training Distance Distribution" style="width: 50%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <p><strong>• Acceleration / Deceleration Profile</strong> → Bar charts visualize the count of accelerations and decelerations, providing insight into mechanical load and session intensity.</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/acc.jpg" alt="Acceleration Profile" style="width: 50%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <p><strong>• Internal Load Trends</strong> → Combines RPE and time above 90% HR<sub>max</sub> per day, illustrating the relationship between perceived effort and physiological demand.</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/RPE.jpg" alt="Internal Load Trends" style="width: 50%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <p><strong>• Speed Exposure Analysis</strong> → Shows each player’s % of maximum speed reached during the week, a key readiness and performance indicator. Alerts trigger when values fall below 95% of individual max.</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/speed.jpg" alt="Speed Exposure Analysis" style="width: 100%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <p><strong>• Filter Controls</strong> → Dynamic slicers for Week, Day, Team (First Team, U19, U21, U23), and Player, enabling targeted analysis across groups and individuals.</p>
+      <div style="margin: 1.5rem 0;">
+        <img src="/images/filters.jpg" alt="Dashboard Filters" style="width: 100%; max-width: 600px; display: block; margin: 0 auto; border-radius: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);" />
+      </div>
+
+      <div style="background-color: #ecfdf5; border-left: 4px solid #10b981; padding: 1rem 1.25rem; margin: 2rem 0; border-radius: 0.375rem;">
+        <strong>✅ Key takeaway:</strong> This pipeline transforms error-prone Excel workflows into a robust, automated system—enabling live dashboards, longitudinal tracking, and scalable monitoring aligned with elite football standards.
+      </div>
+    `,
+
+  update_workflow: `
+    <p>Updating the system is fully automated:</p>
+    <ol style="list-style-type: decimal; padding-left: 1.8rem; margin: 1.5rem 0; font-size: 1.05rem; line-height: 1.75; color: #1e293b;">
+      <li>Drop new daily CSVs into the project folder.</li>
+      <li>Run <code>update_db.py</code> (<a href="/data/update_db.py" download style="color: #3b82f6; font-weight: bold; text-decoration: underline;">download here</a>).</li>
+      <li>Processed files automatically move to <code>/done</code> to prevent duplication.</li>
+      <li>Power BI refreshes the latest data instantly.</li>
+    </ol>
+
+    <p>This short demo shows how the system updates seamlessly: running the Python script processes new data, and the dashboard refreshes instantly to reflect the latest insights. </p>
+
+    <video controls playsinline width="100%" style="border-radius: 0.5rem; margin: 2rem 0; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+      <source src="/videos/Actualizacion.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <p>The full source code, documentation, and notebooks are available on 
+    <a href="https://github.com/Ignacho02/Football-Performance-department-Data-infrastructure" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        style="color: #3b82f6; font-weight: 600; text-decoration: underline; font-size: 1.05rem;">
+        GitHub
+    </a>.</p>
+  `,
+
+  references: [
+    "Buchheit, M., & Laursen, P. B. (2024). Data everywhere, insight nowhere: a practical quadrant-based model for monitoring training load vs. response in elite football. Sport Performance & Science Reports, 2024(259), v1.",
+    "Buchheit, M., Akubat, I., Ellis, M., Campos, M., Rabbani, A., Castagna, C., & Malone, S. (2025). Revisiting dose–response relationships between heart rate zones, TRIMPs, and aerobic-related physiological and performance markers in elite team sports. Sport Performance & Science Reports, 269, v1."
+  ],
+
+  technologies: ["Python", "SQLite", "Pandas", "Power BI"]
 };

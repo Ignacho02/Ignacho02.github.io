@@ -131,7 +131,7 @@ export default function Projects() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      backgroundColor: 'white', // ✅ Fondo blanco
+                      backgroundColor: 'white',
                       borderRadius: '0.5rem',
                       marginBottom: '1.5rem',
                       overflow: 'hidden'
@@ -148,6 +148,19 @@ export default function Projects() {
                       />
                     </div>
                   )}
+
+                  {/* Título del proyecto */}
+                  <h3 style={{
+                    fontSize: '1.5rem',
+                    fontWeight: '700',
+                    marginTop: '0',
+                    marginBottom: '0.75rem',
+                    color: '#0f172a'
+                  }}>
+                    {project.title}
+                  </h3>
+
+                  {/* Categorías justo después del título */}
                   <div style={{ marginBottom: '1rem' }}>
                     {projectCategories.map(cat => (
                       <span 
@@ -165,23 +178,21 @@ export default function Projects() {
                         {cat}
                       </span>
                     ))}
-                    <h3 style={{
-                      fontSize: '1.5rem',
-                      fontWeight: '700',
-                      marginTop: '0.5rem',
-                      color: '#0f172a'
-                    }}>
-                      {project.title}
-                    </h3>
                   </div>
+
+                  {/* Descripción */}
                   <p style={{ color: '#475569', marginBottom: '1rem', flex: 1 }}>
                     {project.shortDescription || 'No description available.'}
                   </p>
+
+                  {/* Tecnologías */}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
                     {(project.technologies || []).slice(0, 4).map((tech) => (
                       <span key={tech} className="badge" style={{ fontSize: '0.75rem' }}>{tech}</span>
                     ))}
                   </div>
+
+                  {/* Resultados */}
                   {project.results && (
                     <div style={{
                       backgroundColor: '#dcfce7',
@@ -195,6 +206,8 @@ export default function Projects() {
                       </p>
                     </div>
                   )}
+
+                  {/* Botón de detalles */}
                   <Link
                     to={`/project/${project.id}`}
                     className="btn"
